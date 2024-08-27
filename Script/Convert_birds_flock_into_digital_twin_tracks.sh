@@ -1,10 +1,9 @@
 #!/bin/bash
 
 SPEED=10 #m/s
-FILTER=120
+FILTER=40
 HELICO=True
-DILATATION_FACTOR=10.0
-LENGTH_TRACK=5000
+LENGTH_TRACK=5000 # modify this value when you change the length of the trajectories you give as input
 
 MAX_PER_SIMULATION=3 #20 #This parameters is for the maximum number of trajectories that could be played at the same times in a digital twin simulation
 

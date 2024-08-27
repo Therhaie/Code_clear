@@ -6,6 +6,9 @@ FILTER=120
 HELICO=True
 DILATATION_FACTOR=10.0
 LENGTH_TRACK=5000
+DILATATION_FACTOR_X=10.0
+DILATATION_FACTOR_Y=5.0
+DILATATION_FACTOR_Z=1.0
 
 MAX_PER_SIMULATION=3 #20 #This parameters is for the maximum number of trajectories that could be played at the same times in a digital twin simulation
 
@@ -59,15 +62,7 @@ for substring in "${substrings[@]}"; do
     #echo "Group for $substring: ${sub_group_of_same_trajectories[@]}"
 done
 
-# Print every element of the group_of_same_trajectories array
-# for group in "${group_of_same_trajectories[@]}"; do
-#     echo "----------------------------------------------------------------------------------"
-#     echo "$group"
-# done
 
-
-# echo "------"
-# echo "$group_of_same_trajectories[0]"
 
 ##################### Let's convert the data throught the use of the python file #####################
 
@@ -136,7 +131,7 @@ do
     # echo "############################################################"
 
     # Add the remaining arguments to the command
-    cmd+=" --output-path \"$output_path\" --speed \"$SPEED\" --filter \"$FILTER\" --helico \"$HELICO\" --length-track \"$LENGTH_TRACK\" --dilatation-factor \"$DILATATION_FACTOR\" --tracks-number \"$tracks_number\""
+    cmd+=" --output-path \"$output_path\" --speed \"$SPEED\" --filter \"$FILTER\" --helico \"$HELICO\" --length-track \"$LENGTH_TRACK\" --dilatation-factor \"$DILATATION_FACTOR\" --tracks-number \"$tracks_number\" --dilatation-factor-x \"$DILATATION_FACTOR_X\" --dilatation-factor-y \"$DILATATION_FACTOR_Y\" --dilatation-factor-z \"$DILATATION_FACTOR_Z\""
 
     # Output the final command for debugging purposes
     echo "Final command: $cmd"
@@ -146,41 +141,3 @@ do
     eval "$cmd"
 
 done
-
-# Define the output path for the XML file
-
-
-
-# output_path="$PWD"
-# output_path=$(dirname "$output_path")
-# output_path="${output_path}/Dataset/Processed_dataset/drones/trajectories_xml/$PROCESSED_DIRECTORY/traj_script1.xml"
-
-# # Check if the directory exists
-# if [ ! -d "$output_path" ]; then
-#     mkdir -p "$output_path"
-#     echo "Directory created at: $output_path"
-# fi
-
-# # The part about limiting the number of drones per tracks will be added after this test
-
-# # Definition of every element that will be use by the python progamm
-
-# path_python_xml_converter="$PWD"
-# path_python_xml_converter=$(dirname "$path_python_xml_converter")
-# path_python_xml_converter="${path_python_xml_converter}/Tools/convert_drones_trajectories_into_xml.py"
-
-# # Construct the command to run the Python script
-# cmd="python3 $path_python_xml_converter --list-path"
-
-# # Add each file path as a separate argument to the command
-# for path in "${group_of_same_trajectories[@]}"; do
-#     cmd+=" \"$path\""
-# done
-
-# # Add the remaining arguments to the command
-# cmd+=" --output-path \"$output_path\" --speed \"$SPEED\" --filter \"$FILTER\" --helico \"$HELICO\" --length-track \"$length_TRACK\" --dilatation-factor \"$DILATATION_FACTOR\""
-
-# # Run the command
-# eval "$cmd"
-
-#echo " Alhamdulillah the programm compilled well "

@@ -99,6 +99,7 @@ def filter_trajectory(dataframe, step):
     return filtered_dataframe 
 
 def add_offset(dataframe, offset):
+    print("#######################offset", offset)
     ''' Add an offset to every point in the dataframe given'''
     # print("before", dataframe['x'])
     dataframe['x'] += offset[0]
@@ -137,10 +138,18 @@ def augment_distance(list_path, factor):
         id += 1
     # print("list distance", list_distance)
     # print("dilatation factor", factor)
-    print("list of the offset added to the drones", [ [ list_distance[k][0] * factor, list_distance[k][1] * factor, list_distance[k][2] * factor ] for k in range(len(list_distance)) ])
+    # print("list of the offset added to the drones", [ [ list_distance[k][0] * factor[0], list_distance[k][1] * factor[1], list_distance[k][2] * factor[2] ] for k in range(len(list_distance)) ])
 
+    print("\n")
+    for q in range(len(list_distance)):
+        print("distance between drones on the x axis :", list_distance[q][0] * factor[0])
+        print("distance between drones on the y axis :", list_distance[q][1] * factor[1])
+        print("distance between drones on the z axis :", list_distance[q][2] * factor[2])
+        print("\n")
+    
     return list_distance
-    # return [ [ list_distance[k][0] * factor, list_distance[k][1] * factor, list_distance[k][2] * factor ] for k in range(id) ]
+    # return [ [ list_distance[k][0] * factor[0], list_distance[k][1] * factor[1], list_distance[k][2] * factor[2] ] for k in range(len(list_distance)) ]
+    
 
 def write_csv(scenario, dataframe, speed=None, helico_parameter=False):
     if speed is not None:
@@ -194,39 +203,11 @@ def end_function(scenario, directory, name_file):
     print("\n")
     print("output path before handling", directory)
     print("\n")
-    # split the string into two components, with the last component being the filename
 
-    # # print(type(directory))
-    # print("#############################")
-    # print("test with cast in path", os.path.dirname(directory))
-    # print("#############################")
-    # components = directory.rsplit("/", 1)
-
-
-    # # #get the two components
-    # path_c = components[0]
-    # filename = components[1]  # No need to convert to str, it's already a string
-
-    # # Ensure the filename ends with .xml
-    # if not filename.endswith(".xml"):
-    #     filename += ".xml"
-
-    # # print the components
-    # print("Path:", path_c)
-    # print("Filename:", filename)
-    # print("trajscript1.xml" == filename)
-    # ##Create a new path by joining the directory and file name
-    # output_path = os.path.join(path_c, f"{filename}")
     output_path = os.path.join(os.path.dirname(directory), name_file)
     # # Print the output path for debugging purposes
     print(f"Writing XML to: {output_path}")
 
-    # Check if the directory exists
-    # if not os.path.exists(directory):
-    #     # If it doesn't exist, create it
-    #     os.makedirs(directory)
-
-    # Create an ElementTree object from the scenario
     tree = ET.ElementTree(scenario)
 
     # Write the XML to the output path
@@ -287,6 +268,10 @@ def parse_argument():
     parser.add_argument('--output-path', type=str, required=True, help='This parameter is mandatory to know where the generated file goes')
     parser.add_argument('--tracks-number', type=int, required=True, help='This parameter is mandatory')
 
+    parser.add_argument('--dilatation-factor_x', type=float, default=2.0, required=True, help='This factor increase the distance between each drones in order to make the simulation more realistic')
+    parser.add_argument('--dilatation-factor_y', type=float, default=2.0, required=False, help='This factor increase the distance between each drones in order to make the simulation more realistic')
+    parser.add_argument('--dilatation-factor_z', type=float, default=0.0, required=False, help='This factor increase the distance between each drones in order to make the simulation more realistic')
+
     # parser.add_argument('--offset', nargs='+', type=int, default=[0, 0, 0], help='Offset that you want to add to the drones')
     # parser.add_argument('--block-number'
     return parser.parse_args()
@@ -302,6 +287,11 @@ if __name__ == "__main__":
     output_path = args.output_path
     length_track = args.length_track # will be use later to setu the offset
     tracks_number = args.tracks_number
+    dilatation_factor_x = args.dilatation_factor_x
+    dilatation_factor_y = args.dilatation_factor_y
+    dilatation_factor_z = args.dilatation_factor_z
+
+    dilatation_factor_array = np.array([dilatation_factor_x, dilatation_factor_y, dilatation_factor_z])
 
     list_to_give=[]
 
@@ -314,4 +304,4 @@ if __name__ == "__main__":
             list_group.append(trajectory ) #+ '.csv')
         list_to_give.append(list_group)
 
-    main(list_to_give, speed, filter, dilatation_factor, helico, output_path, length_track, tracks_number)
+    main(list_to_give, speed, filter, dilatation_factor_array, helico, output_path, length_track, tracks_number)

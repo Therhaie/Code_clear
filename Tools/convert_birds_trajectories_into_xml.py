@@ -67,12 +67,13 @@ def init_funct():
     return scenario
 
 def adapt_speed_birds(data, speed_wanted=25):
+    '''This function adapts the speed of the birds to the speed wanted to modify the speed of the birds in the scenario I need to modify the time column of the dataframe'''
     df = data
     dx = df['x'].iloc[-1] - df['x'].iloc[0]
     dy = df['y'].iloc[-1] - df['y'].iloc[0]
     dz = df['z'].iloc[-1] - df['z'].iloc[0]
     distance = (dx**2 + dy**2 + dz**2)**0.5
-    print("distance:", distance)
+    # print("distance:", distance)
     
     # Convert the start and end time to seconds
     start_time = df['time'].iloc[0].total_seconds()
@@ -98,19 +99,20 @@ def convert_to_datetime(dataframe):
 
     # Convert the 'time' column to datetime
     dataframe['time'] = pd.to_datetime(dataframe['time'], format=date_format)
-    print('Original datetime values:', dataframe['time'])
-    print('####################################################')
+    # print('Original datetime values:', dataframe['time'])
+    # print('####################################################')
 
     # Subtract the first value from every element in the 'time' column
     first_time = dataframe['time'].iloc[0]  # Get the first time value as a datetime object
     dataframe['time'] = dataframe['time'] - first_time  # Subtract it from all other values
 
-    print('Modified datetime values:', dataframe['time'])
+    #print('Modified datetime values:', dataframe['time'])
 
     return dataframe
 
 def add_offset(dataframe, offset):
     ''' Add an offset to every point in the dataframe given'''
+    #print("##########################offset", offset)
     # print("before", dataframe['x'])
     dataframe['x'] += offset[0]
     dataframe['y'] += offset[1]
@@ -122,14 +124,13 @@ def add_offset(dataframe, offset):
 def end_function(scenario, directory, name_file):
     ''' Be sure that the path given do not contain any weird caracters like _ but just letters and numbers'''
     # Create a new file name
-    print("\n")
-    print("output path before handling", directory)
-    print("\n")
+    # print("\n")
+    # print("output path before handling", directory)
+    # print("\n")
     # split the string into two components, with the last component being the filename
 
     output_path = os.path.join(os.path.dirname(directory), name_file)
-    # # Print the output path for debugging purposes
-    print(f"Writing XML to: {output_path}")
+    # print(f"Writing XML to: {output_path}")
 
     # Check if the directory exists
     # if not os.path.exists(directory):
@@ -234,41 +235,31 @@ if __name__ == "__main__":
     helico_parameter = args.helico
 
     print("list path", list_path)
+    number_of_the_tracks = 0
 
     scenario = init_funct()
     # create the dataset that will be given to the function
     for track in list_path:
+        number_of_the_tracks = 0
         print("track", track)
         print(" \n")
         # Get the number of birds in the dataset
         data = pd.read_csv(track)
         data = convert_to_datetime(data)
         num_birds = int((data.shape[1] - 1 ) / 3)
+
         # print("num birds", num_birds)
         # print("columns", data.columns)
         data.columns = data.columns.str.strip()
         for i in range(num_birds):
-            print("key value of the dataset", data.keys()) 
+            #print("key value of the dataset", data.keys()) 
             # print("data x", data[f'x_{i}'])
-            # data_bird = pd.DataFrame({ 'time' : data['time'], 'x' : data[f'x_{i}'], 'y' : data[f'y_{i}'], 'z' : data[f'z_{i}']})
-            data_bird = pd.DataFrame({ 'time' : data['time'], 'x' : data[f'x_0'], 'y' : data[f'y_0'], 'z' : data[f'z_0']})
+            data_bird = pd.DataFrame({ 'time' : data['time'], 'x' : data[f'x_{i}'], 'y' : data[f'y_{i}'], 'z' : data[f'z_{i}']})
+            # data_bird = pd.DataFrame({ 'time' : data['time'], 'x' : data[f'x_0'], 'y' : data[f'y_0'], 'z' : data[f'z_0']})
+
+            # Add the offset to the data in order to have multiple tracks on the same scenario
+            data_bird = add_offset(data_bird, [2 * number_of_the_tracks * length_track + 3000, 2 * number_of_the_tracks * length_track + 3000, 0]) #The 3000 is the radius of the circle in which the digital twin is blind
+
             write_csv(scenario, data_bird, speed, helico_parameter)
     name_file = f"scenario_test{tracks_number}.xml"
     end_function(scenario, output_path, name_file)  
-
-
-
-
-
-    # list_to_give=[]
-
-    # # Generate the list_path that will be given as argument to the function
-    # for group in list_path:
-    #     group = group.split('\n')
-    #     list_group=[]
-    #     for trajectory in group:
-    #         # print(trajectory)
-    #         list_group.append(trajectory ) #+ '.csv')
-    #     list_to_give.append(list_group)
-
-    # main(list_to_give, speed, filter, dilatation_factor, helico, output_path, length_track, tracks_number)
