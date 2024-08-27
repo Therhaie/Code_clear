@@ -1,0 +1,39 @@
+###################################################### General though about the simulator ######################################################
+
+
+- when only the "attraction neighborhood_radius" is modified the more the value diminished the more the drones group themselve
+- when only the "cohesion_force" is modified, the more it increases the chaotic the movement become, drones do not continue folowing the trajectories and spread out (notice that according to my observation the reduction of the value seems to not modify the result)
+- target force : parameter that controls how strong will be force that attract the drones to the point that they have to follow will be (I notice that when the strenght is to strong the drones tend to form pair and when it's to weak dornes move away and can create several groups of drones 
+
+- important to not increase to much the value of the max speed because this mawimum speed can be reached in straight line and then lead to "burst" of the flock, the solution if you really need to increase the maximm speed is to increase "target_force" 
+
+- When your are trying to modify a huge number of parameters a phenomen of ondulation can appears on long trajectories
+
+
+
+######################################################   Sample configuration used : ######################################################
+
+
+configuration to create an interesting swarm : <attraction neighborhood_radius="4.0" separation_radius="2.0" separation_force="0.7" alignment_force="0.05" cohesion_force="0.05" target_force="1.0"/>
+
+Interesting shape of FLOCK of small group od drones
+<attraction neighborhood_radius="4.0" separation_radius="1.0" separation_force="0.8" alignment_force="0.05" cohesion_force="0.01" target_force="4.2"/>
+
+BASE CONFIG 
+<attraction neighborhood_radius="4.0" separation_radius="1.5" separation_force="1.3" alignment_force="0.1" cohesion_force="0.1" target_force="1.8"/>
+
+NON COORDINATE MOVEMENT OF FLOCK
+<attraction neighborhood_radius="4.0" separation_radius="1.5" separation_force="33.8" alignment_force="0.05" cohesion_force="0.01" target_force="4.2"/>
+
+<attraction neighborhood_radius="4.0" separation_radius="1.5" separation_force="59.8" alignment_force="0.05" cohesion_force="0.01" target_force="1.2"/>
+<attraction neighborhood_radius="4.0" separation_radius="1.5" separation_force="59.8" alignment_force="0.05" cohesion_force="0.01" target_force="0.6"/>
+
+
+
+
+
+
+
+
+
+

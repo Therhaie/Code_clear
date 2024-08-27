@@ -1,0 +1,4 @@
+- create a script to convert .json file into the .csv by the use of the simulator
+	- make sure that every path will be good in the config file
+
+- create script to convert the dataset from csv into .json

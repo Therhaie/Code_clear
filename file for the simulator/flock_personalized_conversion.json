@@ -1,0 +1,25 @@
+{
+  "drone": {
+    "urdf": "/mnt/c/Users/ththy/Desktop/Stage_Thales/SimDrone6DOF-V1.0.0/src/drone_sim_6dof/examples/drone/pyb/robobee.urdf",
+    "xml": "/mnt/c/Users/ththy/Desktop/Stage_Thales/SimDrone6DOF-V1.0.0/src/drone_sim_6dof/examples/drone/jsb/bebop2.xml",
+    "conf": "/mnt/c/Users/ththy/Desktop/Stage_Thales/SimDrone6DOF-V1.0.0/src/drone_sim_6dof/examples/drone/conf.xml",
+    "drones": 4
+  },
+  "sim": {
+    "drones": 5,
+    "env": "pyb",
+    "delta_t": 0.00833,
+    "duration_s": 3693
+  },
+  "start": {
+    "placement": "grid",
+    "spacing": 1,
+    "radius": 5
+  },
+  "logger": {
+    "type": "play",
+    "output_dir": "/mnt/c/Users/ththy/Desktop/Stage_Thales/Trajectories_to_move_to_digital_twin/dataset_drones_post_simulation/",
+    "filename": "log",
+    "overwrite": true
+  }
+}
